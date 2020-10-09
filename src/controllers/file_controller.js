@@ -3,9 +3,17 @@ const File = require("../models").File;
 exports.get_file = async function (req, res) {};
 
 exports.delete_file = async function (req, res) {
-	const file = await File.findById(req.params.id);
-
-	await file.remove();
+	await File.update(
+		{
+			deleted_by: req.auth_user.id,
+			deleted_at: Date.now(),
+		},
+		{
+			where: {
+				id: req.params.id,
+			},
+		}
+	);
 
 	return res.send();
 };
@@ -26,7 +34,13 @@ exports.upload_file = async function (req, res) {
 };
 
 exports.get_files = async function (req, res) {
-	const files = await File.find();
+	const files = await File.findAll({
+		attributes: ["id", "filename", "category_id"],
+		where: {
+			project_id: req.params.project_id,
+			deleted_by: null,
+		},
+	});
 
 	return res.json(files);
 };

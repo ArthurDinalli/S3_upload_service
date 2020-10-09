@@ -3,9 +3,9 @@ const multer = require("multer");
 const multerConfig = require("./src/config/multer");
 const file_controller = require("./src/controllers/file_controller");
 
-routes.get("/files", file_controller.get_files);
+routes.get("/files/:project_id", file_controller.get_files);
 
-routes.get("/file", file_controller.get_file);
+routes.get("/files/:id", file_controller.get_file);
 
 routes.post(
 	"/files",
