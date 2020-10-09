@@ -1,6 +1,29 @@
 const File = require("../models").File;
+const S3 = require("../../s3");
 
-exports.get_file = async function (req, res) {};
+exports.get_file = async function (req, res) {
+	file =  await File.findByPk(req.params.id)
+	
+	if(!file){
+		return res.status(500).json(`Arquivo "${req.params.id}" não existe!`);
+	}else if(file.deleted_at && file.deleted_by){
+		return res.status(500).json(`Arquivo "${req.params.id}" deletado!`)
+	}
+
+	var params = {
+		Bucket: process.env.BUCKET_NAME,
+		Key: file.id,
+		Expires: 1000,
+	};
+	
+	S3.getSignedUrl('getObject', params, function(err, signed_url){
+		if (err) {
+			return res.status(500).json(err);
+		}
+		return res.json(signed_url);
+	});
+
+};
 
 exports.delete_file = async function (req, res) {
 	await File.update(
