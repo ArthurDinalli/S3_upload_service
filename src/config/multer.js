@@ -39,13 +39,11 @@ const allowedMimes = [
 	"application/msword",
 ];
 
-const storageTypes = {
-	s3: multerS3({
+module.exports = {
+	storage: multerS3({
 		s3: new aws.S3(),
 		bucket: process.env.BUCKET_NAME,
-		// há como forçar download por esse parametro
-		contentType: multerS3.AUTO_CONTENT_TYPE,
-		acl: "public-read",
+		acl: "private",
 		key: (req, file, cb) => {
 			crypto.randomBytes(16, (err, hash) => {
 				if (err) cb(err);
@@ -58,13 +56,9 @@ const storageTypes = {
 			});
 		},
 	}),
-};
-
-module.exports = {
-	storage: storageTypes[process.env.STORAGE_TYPE],
-	// limits: {
-	// 	fileSize: MAX_SIZE_FIFTY_MEGABYTES,
-	// },
+	limits: {
+		fileSize: MAX_SIZE_FIFTY_MEGABYTES,
+	},
 	fileFilter: (req, file, cb) => {
 		if (allowedMimes.includes(file.mimetype)) {
 			cb(null, true);
