@@ -2,7 +2,7 @@ const routes = require("express").Router();
 const multer = require("multer");
 const multerConfig = require("./src/config/multer");
 
-const File = require("./src/models/files");
+const { File } = require("./src/models/files");
 
 routes.get("/files", async (req, res) => {
 	const files = await File.find();
@@ -33,7 +33,11 @@ routes.post(
 );
 
 routes.delete("/files/:id", async (req, res) => {
-	const file = await File.findById(req.params.id);
+	const file = await File.findAll({
+		where: {
+			key: req.params.id,
+		},
+	});
 
 	await file.remove();
 
