@@ -1,47 +1,18 @@
 const routes = require("express").Router();
 const multer = require("multer");
 const multerConfig = require("./src/config/multer");
+const file_controller = require("./src/controllers/file_controller");
 
-const { File } = require("./src/models/files");
+routes.get("/files", file_controller.get_files);
 
-routes.get("/files", async (req, res) => {
-	const files = await File.find();
-
-	return res.json(files);
-});
+routes.get("/file", file_controller.get_file);
 
 routes.post(
 	"/files",
 	multer(multerConfig).single("file"),
-	async (req, res) => {
-		// const {
-		// 	originalname: name,
-		// 	size,
-		// 	key,
-		// 	location: url = "",
-		// } = req.file;
-
-		// const file = await File.create({
-		// 	name,
-		// 	size,
-		// 	key,
-		// 	url,
-		// });
-
-		return res.json(req.file);
-	}
+	file_controller.upload_file
 );
 
-routes.delete("/files/:id", async (req, res) => {
-	const file = await File.findAll({
-		where: {
-			key: req.params.id,
-		},
-	});
-
-	await file.remove();
-
-	return res.send();
-});
+routes.delete("/files/:id", file_controller.delete_file);
 
 module.exports = routes;
