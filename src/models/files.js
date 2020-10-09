@@ -1,17 +1,26 @@
 module.exports = (sequelize, DataTypes) => {
-	const File = sequelize.define("File", {
-		fileID: {
-			type: DataTypes.STRING,
-			primaryKey: true,
+	const File = sequelize.define(
+		"File",
+		{
+			id: {
+				type: DataTypes.STRING,
+				primaryKey: true,
+				allowNull: false,
+			},
+			project_id: { type: DataTypes.BIGINT, allowNull: false },
+			added_by: { type: DataTypes.BIGINT, allowNull: false },
+			added_at: { type: DataTypes.DATE, allowNull: false },
+			deleted_by: DataTypes.BIGINT,
+			deleted_at: DataTypes.DATE,
+			category_id: { type: DataTypes.BIGINT, allowNull: false },
+			filename: { type: DataTypes.STRING, allowNull: false },
+			file_type: { type: DataTypes.STRING, allowNull: false },
 		},
-		fileName: DataTypes.STRING,
-		upUserID: DataTypes.STRING,
-		downUserID: DataTypes.STRING,
-		url: DataTypes.STRING,
-		isDeleted: DataTypes.BOOLEAN,
-		createdAt: DataTypes.DATE,
-		updatedAt: DataTypes.DATE,
-	});
+		{
+			tableName: "project_attachements",
+			timestamps: false,
+		}
+	);
 
 	return File;
 };

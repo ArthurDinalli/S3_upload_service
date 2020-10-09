@@ -4,6 +4,7 @@ const cors = require("cors");
 const process = require('process'); 
 const app = express();
 const auth = require("./src/middlewares/is_auth.middleware");
+const { File } = require("./src/models/files");
 
 process.on('SIGINT', function onSigint() {
   app.shutdown();
