@@ -12,7 +12,7 @@ exports.get_file = async function (req, res) {
 
 	var params = {
 		Bucket: process.env.BUCKET_NAME,
-		Key: file.id,
+		Key: file.id.replace('-','/'), //para acessar o diretório no S3 é necessário trocar o '-' para uma '/'
 		Expires: 1000,
 	};
 	
@@ -43,7 +43,7 @@ exports.delete_file = async function (req, res) {
 
 exports.upload_file = async function (req, res) {
 	const fileInfo = {
-		id: req.file.key,
+		id: req.file.key.replace('/','-'), //A '/' necessária para alcançar o diretório no S3 conflita com URL's
 		project_id: req.body.project_id,
 		added_by: req.auth_user.id,
 		added_at: Date.now(),
