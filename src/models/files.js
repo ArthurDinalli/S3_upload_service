@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 			deleted_at: DataTypes.DATE,
 			category_id: { type: DataTypes.BIGINT, allowNull: false },
 			filename: { type: DataTypes.STRING, allowNull: false },
+			file_type: { type: DataTypes.STRING, allowNull: false },
 		},
 		{
 			tableName: "project_attachements",
