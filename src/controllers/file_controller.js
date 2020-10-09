@@ -49,6 +49,7 @@ exports.upload_file = async function (req, res) {
 		added_at: Date.now(),
 		category_id: req.body.category_id,
 		filename: req.file.originalname,
+		file_type: req.file.mimetype,
 	};
 
 	const file = await File.create(fileInfo);
@@ -58,7 +59,7 @@ exports.upload_file = async function (req, res) {
 
 exports.get_files = async function (req, res) {
 	const files = await File.findAll({
-		attributes: ["id", "filename", "category_id"],
+		attributes: ["id", "filename", "category_id", "file_type"],
 		where: {
 			project_id: req.params.project_id,
 			deleted_by: null,
