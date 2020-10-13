@@ -2,27 +2,30 @@ const File = require("../models").File;
 const S3 = require("../../s3");
 
 exports.get_file = async function (req, res) {
-	file =  await File.findByPk(req.params.id)
-	
-	if(!file){
-		return res.status(500).json(`Arquivo "${req.params.id}" não existe!`);
-	}else if(file.deleted_at && file.deleted_by){
-		return res.status(500).json(`Arquivo "${req.params.id}" deletado!`)
+	file = await File.findByPk(req.params.id);
+
+	if (!file) {
+		return res
+			.status(500)
+			.json(`Arquivo "${req.params.id}" não existe!`);
+	} else if (file.deleted_at && file.deleted_by) {
+		return res
+			.status(500)
+			.json(`Arquivo "${req.params.id}" deletado!`);
 	}
 
 	var params = {
 		Bucket: process.env.BUCKET_NAME,
-		Key: file.id.replace('-','/'), //para acessar o diretório no S3 é necessário trocar o '-' para uma '/'
+		Key: file.id.replace("-", "/"), //para acessar o diretório no S3 é necessário trocar o '-' para uma '/'
 		Expires: 1000,
 	};
-	
-	S3.getSignedUrl('getObject', params, function(err, signed_url){
+
+	S3.getSignedUrl("getObject", params, function (err, signed_url) {
 		if (err) {
 			return res.status(500).json(err);
 		}
 		return res.json(signed_url);
 	});
-
 };
 
 exports.delete_file = async function (req, res) {
@@ -43,7 +46,7 @@ exports.delete_file = async function (req, res) {
 
 exports.upload_file = async function (req, res) {
 	const fileInfo = {
-		id: req.file.key.replace('/','-'), //A '/' necessária para alcançar o diretório no S3 conflita com URL's
+		id: req.file.key.replace("/", "-"), //A '/' necessária para alcançar o diretório no S3 conflita com URL's
 		project_id: req.body.project_id,
 		added_by: req.auth_user.id,
 		added_at: Date.now(),
@@ -58,13 +61,17 @@ exports.upload_file = async function (req, res) {
 };
 
 exports.get_files = async function (req, res) {
-	const files = await File.findAll({
-		attributes: ["id", "filename", "category_id", "file_type"],
-		where: {
-			project_id: req.params.project_id,
-			deleted_by: null,
-		},
-	});
+	if (!isNaN(Number(req.params.project_id))) {
+		const files = await File.findAll({
+			attributes: ["id", "filename", "category_id", "file_type"],
+			where: {
+				project_id: req.params.project_id,
+				deleted_by: null,
+			},
+		});
 
-	return res.json(files);
+		return res.json(files);
+	} else {
+		return res.status(500).json(`Id do projeto inválido!`);
+	}
 };
