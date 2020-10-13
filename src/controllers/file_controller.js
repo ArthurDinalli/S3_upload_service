@@ -54,7 +54,7 @@ exports.upload_file = async function (req, res) {
 
 	const file = await File.create(fileInfo);
 
-	return res.json(req.file);
+	return res.json(fileInfo.id);
 };
 
 exports.get_files = async function (req, res) {
