@@ -48,6 +48,7 @@ $ docker run -d -p <HOST_PORT>:3000 --name=<CONTAINER_NAME> solar_upload_service
 
 ### Utilização
 São expostas 4 rotas:
+
 ```GET /files/:project_id```: retorna todos os arquivos referentes ao projeto identificado por ```project_id``` e que não foram marcados como deletados. 
 
 ```GET /file/:id```: retorna uma URL pré assinada para download do arquivo identificado por ```id```, caso esse não tenha sido marcado como deletado. 
