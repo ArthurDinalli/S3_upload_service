@@ -57,6 +57,7 @@ São expostas 4 rotas:
 ```POST /files```: recebe os seguintes parametros como form/multi-part:
  - project_id: INT identificando o projeto
  - category_id: INT identificando a categoria
+ - file_description: STR com uma descrição do arquivo
  - file: o próprio arquivo
 
 Retorna o ```id``` do arquivo salvo.

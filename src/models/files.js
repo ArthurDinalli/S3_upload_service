@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 			category_id: { type: DataTypes.BIGINT, allowNull: false },
 			filename: { type: DataTypes.STRING, allowNull: false },
 			file_type: { type: DataTypes.STRING, allowNull: false },
+			file_description: { type: DataTypes.STRING, allowNull: false }
 		},
 		{
 			tableName: "project_attachements",

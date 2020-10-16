@@ -11,7 +11,7 @@ exports.get_file = async function (req, res) {
 	} else if (file.deleted_at && file.deleted_by) {
 		return res
 			.status(404)
-			.json(`Arquivo "${req.params.id}" deletado!`);
+			.json(`Arquivo "${file.file_description}" deletado!`);
 	}
 
 	var params = {
@@ -53,6 +53,7 @@ exports.upload_file = async function (req, res) {
 		category_id: req.body.category_id,
 		filename: req.file.originalname,
 		file_type: req.file.mimetype,
+		file_description: req.body.file_description,
 	};
 
 	const file = await File.create(fileInfo);
