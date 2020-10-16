@@ -17,7 +17,7 @@ exports.get_file = async function (req, res) {
 	var params = {
 		Bucket: process.env.BUCKET_NAME,
 		Key: file.id.replace("-", "/"), //para acessar o diretório no S3 é necessário trocar o '-' para uma '/'
-		Expires: 1000,
+		Expires: process.env.PRESIGNED_URL_EXPIRATION_TIME_IN_SECONDS,
 	};
 
 	S3.getSignedUrl("getObject", params, function (err, signed_url) {

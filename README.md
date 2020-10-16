@@ -31,6 +31,7 @@ AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
 AWS_SIGNATURE_VERSION= #usar sempre "v4"
 BUCKET_REGION=
+PRESIGNED_URL_EXPIRATION_TIME_IN_SECONDS= #min: 1, max: 604800 
 ```
 Para iniciar o sistema, executar o comando
 ```sh
