@@ -6,11 +6,11 @@ exports.get_file = async function (req, res) {
 
 	if (!file) {
 		return res
-			.status(500)
+			.status(404)
 			.json(`Arquivo "${req.params.id}" não existe!`);
 	} else if (file.deleted_at && file.deleted_by) {
 		return res
-			.status(500)
+			.status(404)
 			.json(`Arquivo "${req.params.id}" deletado!`);
 	}
 
@@ -72,6 +72,6 @@ exports.get_files = async function (req, res) {
 
 		return res.json(files);
 	} else {
-		return res.status(500).json(`Id do projeto inválido!`);
+		return res.status(404).json(`Id do projeto inválido!`);
 	}
 };
