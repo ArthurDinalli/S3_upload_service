@@ -12,16 +12,32 @@ module.exports = (sequelize, DataTypes) => {
 			added_at: { type: DataTypes.DATE, allowNull: false },
 			deleted_by: DataTypes.BIGINT,
 			deleted_at: DataTypes.DATE,
-			category_id: { type: DataTypes.BIGINT, allowNull: false },
+			category_id: {
+				type: DataTypes.BIGINT,
+				allowNull: false,
+				foreignKey: true,
+			},
 			filename: { type: DataTypes.STRING, allowNull: false },
 			file_type: { type: DataTypes.STRING, allowNull: false },
-			file_description: { type: DataTypes.STRING, allowNull: false }
+			file_description: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
 		},
 		{
 			tableName: "project_attachements",
 			timestamps: false,
 		}
 	);
+
+	File.associate = (models) => {
+		File.belongsTo(models.Category, {
+			foreignKey: {
+				allowNull: false,
+				name: "category_id",
+			},
+		});
+	};
 
 	return File;
 };

@@ -1,4 +1,5 @@
 const File = require("../models").File;
+const Category = require("../models").Category;
 const S3 = require("../../s3");
 
 exports.get_file = async function (req, res) {
@@ -64,7 +65,8 @@ exports.upload_file = async function (req, res) {
 exports.get_files = async function (req, res) {
 	if (!isNaN(Number(req.params.project_id))) {
 		const files = await File.findAll({
-			attributes: ["id", "filename", "category_id", "file_type"],
+			attributes: ["id", "filename", "file_type"],
+			include: [Category],
 			where: {
 				project_id: req.params.project_id,
 				deleted_by: null,
