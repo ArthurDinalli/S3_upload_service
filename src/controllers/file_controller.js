@@ -3,7 +3,7 @@ const Category = require("../models").Category;
 const S3 = require("../../s3");
 
 exports.get_file = async function (req, res) {
-	file = await File.findByPk(req.params.id);
+	file = await File.findByPk(req.params.id, {attributes: ["id", "deleted_at", "deleted_by"]});
 
 	if (!file) {
 		return res
@@ -18,7 +18,7 @@ exports.get_file = async function (req, res) {
 	var params = {
 		Bucket: process.env.BUCKET_NAME,
 		Key: file.id.replace("-", "/"), //para acessar o diretório no S3 é necessário trocar o '-' para uma '/'
-		Expires: process.env.PRESIGNED_URL_EXPIRATION_TIME_IN_SECONDS,
+		Expires: parseInt(process.env.PRESIGNED_URL_EXPIRATION_TIME_IN_SECONDS),
 	};
 
 	S3.getSignedUrl("getObject", params, function (err, signed_url) {
@@ -66,7 +66,10 @@ exports.get_files = async function (req, res) {
 	if (!isNaN(Number(req.params.project_id))) {
 		const files = await File.findAll({
 			attributes: ["id", "filename", "file_type"],
-			include: [Category],
+			include: {
+				model: Category,
+				as: 'category',
+			},
 			where: {
 				project_id: req.params.project_id,
 				deleted_by: null,

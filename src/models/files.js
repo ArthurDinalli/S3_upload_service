@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 
 	File.associate = (models) => {
 		File.belongsTo(models.Category, {
+			as: 'category',
 			foreignKey: {
 				allowNull: false,
 				name: "category_id",
