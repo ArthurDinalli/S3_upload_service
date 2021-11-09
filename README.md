@@ -40,11 +40,11 @@ $ npm start
 #### Instalação via Docker
 É necessário preencher o arquivo ```.env``` da mesma forma que na instalação nativa. Depois, construir a imagem a partir do ```Dockerfile``` na raiz do projeto:
 ```sh
-$ docker build --no-cache=true --tag solar_upload_service:1.0 .
+$ docker build --no-cache=true --tag upload_service:1.0 .
 ```
 Agora, levantar o container com:
 ```sh
-$ docker run -d -p <HOST_PORT>:3000 --name=<CONTAINER_NAME> solar_upload_service:1.0 
+$ docker run -d -p <HOST_PORT>:3000 --name=<CONTAINER_NAME> upload_service:1.0 
 ```
 
 ### Utilização
